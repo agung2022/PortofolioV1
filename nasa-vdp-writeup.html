@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: NASA VDP Broken Access Control | Muhammad Agung Faizal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Styling khusus halaman Write-up / Case Study */
+        .article-container {
+            max-width: 860px;
+            margin: 100px auto 60px;
+            padding: 0 24px;
+        }
+
+        .back-nav {
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #ffffff;
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            background: rgba(0, 255, 204, 0.08);
+            border: 1px solid rgba(0, 255, 204, 0.25);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .article-title {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            color: #ffffff;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            background: var(--surface-color);
+            padding: 18px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .meta-item .meta-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-item .meta-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .meta-item .meta-value.highlight {
+            color: var(--primary-color);
+        }
+
+        /* Konten Artikel */
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .article-content h2 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin: 45px 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .article-content h2::before {
+            content: "##";
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin: 25px 0 12px;
+        }
+
+        .article-content p {
+            margin-bottom: 18px;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 0 0 22px 24px;
+            color: var(--text-main);
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+        }
+
+        /* Terminal / Code Box */
+        .code-block {
+            background: #06090e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 20px 0 25px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #11161f;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #30363d;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+
+        pre {
+            padding: 16px 20px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #e6edf3;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--primary-color);
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Callout / Quote Box */
+        .callout {
+            border-left: 3px solid var(--primary-color);
+            background: rgba(0, 255, 204, 0.04);
+            padding: 18px 22px;
+            border-radius: 0 8px 8px 0;
+            margin: 24px 0;
+            font-style: italic;
+            color: #d2d7df;
+        }
+
+        /* Timeline Box */
+        .timeline-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 20px 0;
+        }
+
+        .timeline-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 16px;
+        }
+
+        .timeline-list li::before {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        .timeline-date {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-container {
+                margin-top: 80px;
+                padding: 0 16px;
+            }
+            .meta-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo" style="text-decoration: none;">&gt;_ MyPorto.</a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="article-container">
+        <!-- Back Button -->
+        <div class="back-nav">
+            <a href="index.html#projects" class="back-link">&larr; Back to Portfolio</a>
+        </div>
+
+        <!-- Article Header -->
+        <header class="article-header">
+            <span class="article-tag">Security Research &bull; NASA VDP</span>
+            <h1 class="article-title">Unauthenticated Broken Access Control on NASA’s Cloud Asset: How an Obscure Dork Exposed Full Edit Privileges & Sensitive PII</h1>
+            
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="meta-label">Target Scope</div>
+                    <div class="meta-value">NASA Cloud Storage</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Vulnerability</div>
+                    <div class="meta-value">Broken Access Control / IDOR</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Status</div>
+                    <div class="meta-value highlight">Resolved (Hall of Fame)</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Article Body -->
+        <article class="article-content">
+            <div class="callout">
+                "Security through obscurity is not access control. An asset is either protected by genuine identity authentication, or it is entirely public to the world. There is no middle ground."
+            </div>
+
+            <h2>The Dangerous Fallacy of "Unlisted Links"</h2>
+            <p>
+                When engineers configure shared workspaces or cloud storage drives, they often make a critical assumption: 
+                <em>"Because the shared link contains a high-entropy 44-character cryptographic token, only intended internal staff will ever find it."</em>
+            </p>
+            <p>
+                In offensive security, relying on obscurity is a recipe for disaster. High-entropy links leak continuously through indexed meeting summaries, HTTP referrer headers, open repositories, and web crawlers. When an organization relies on the secrecy of a link instead of enforcing access control, an exposed link instantly turns an anonymous external visitor into an authenticated insider.
+            </p>
+            <p>
+                In this case, an unauthenticated user could not only read sensitive internal contacts, but also overwrite, upload, or delete data within the repository.
+            </p>
+
+            <h2>Discovery & Passive Reconnaissance</h2>
+            <p>
+                The asset was identified during a passive Open-Source Intelligence (OSINT) research session. Instead of conducting intrusive network scans that might violate testing boundaries, the focus was purely on Google Dorking to detect indexed cloud assets that accidentally escaped internal perimeters.
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <span>bash - reconnaissance dork</span>
+                </div>
+                <pre><code>site:drive.google.com/drive/folders/* "nasa" (ext:xls OR ext:csv OR ext:pdf)
+site:docs.google.com/spreadsheets/* intext:"nasa.gov" "internal"</code></pre>
+            </div>
+
+            <p>
+                Within a targeted search, search engines returned an indexed direct storage link tied to an active collaboration initiative. To confirm the access tier non-destructively, an initial probe was sent via <code>curl</code>:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <span>HTTP Request & Response</span>
+                </div>
+                <pre><code>curl -I "https://drive.google.com/drive/folders/[REDACTED_FOLDER_ID]"
+
+HTTP/2 200 OK
+content-type: text/html; charset=utf-8
+cache-control: no-cache, no-store, max-age=0, must-revalidate</code></pre>
+            </div>
+
+            <p>
+                The server responded with an immediate <code>200 OK</code>. No Single Sign-On (SSO) redirect, no NASA Launchpad gate, and no access prompt. The directory was entirely accessible to the public internet.
+            </p>
+
+            <h2>The Core Bug: Unrestricted Anonymous Write Privileges</h2>
+            <p>
+                While discovering an exposed directory is a standard information leak, probing the folder's access control metadata revealed a far more severe flaw. Querying the drive permissions API exposed the root misconfiguration:
+            </p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <span>Permission Audit (REST API)</span>
+                </div>
+                <pre><code>curl -i "https://www.googleapis.com/drive/v3/files/[REDACTED_FOLDER_ID]?fields=capabilities,permissions"
+
+{
+  "capabilities": {
+    "canAddChildren": true,
+    "canDelete": true,
+    "canDeleteChildren": true,
+    "canEdit": true,
+    "canListChildren": true,
+    "canShare": false
+  },
+  "permissions": [
+    {
+      "id": "anyoneWithLink",
+      "type": "anyone",
+      "role": "writer",
+      "allowFileDiscovery": false
+    }
+  ]
+}</code></pre>
+            </div>
+
+            <p>
+                Notice the entry: <code>"role": "writer"</code> for <code>"type": "anyone"</code>. The folder had been configured to grant full editing rights to anyone holding the link, with inherited permissions applied recursively to all files and subdirectories.
+            </p>
+
+            <h2>Proof of Concept & Attack Vectors</h2>
+            <p>
+                Adhering strictly to Bugcrowd's rules of engagement and ethical standards, destructive actions were not performed. The attack vectors were confirmed non-destructively:
+            </p>
+
+            <h3>1. Sensitive PII Harvesting</h3>
+            <p>
+                Inspection of existing files confirmed the presence of unredacted operational records containing sensitive Personally Identifiable Information (PII):
+            </p>
+            <ul>
+                <li>Full legal names of research staff, contractors, and project leaders</li>
+                <li>Direct mobile numbers and office lines</li>
+                <li>Internal <code>@nasa.gov</code> email addresses alongside partner organization contacts</li>
+                <li>Physical workstation tags and department designations</li>
+            </ul>
+
+            <h3>2. Integrity Tampering & Payload Distribution Risk</h3>
+            <p>
+                Because <code>canAddChildren: true</code> and <code>canDeleteChildren: true</code> were active, an unauthenticated malicious actor could have:
+            </p>
+            <ul>
+                <li><strong>Wiped Records:</strong> Deleted operational documents and logs without leaving a distinct user identity trail.</li>
+                <li><strong>Distributed Payloads:</strong> Staged weaponized PDF documents or infected Office documents directly inside a legitimate NASA-linked cloud repository for phishing campaigns.</li>
+            </ul>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <span>Non-Destructive Upload Capability Check</span>
+                </div>
+                <pre><code>curl -X POST \
+  -H "Content-Type: application/json" \
+  --data '{"name":"vdp_poc_test.txt","mimeType":"text/plain"}' \
+  "https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable"
+
+HTTP/2 200 OK
+Location: https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable&upload_id=[REDACTED]</code></pre>
+            </div>
+
+            <!-- Bukti Sertifikat / Hall of Fame -->
+            <div style="margin-top: 35px;">
+                <h3>Validation & Hall of Fame Acknowledgment</h3>
+                <img src="asset/nasa-vdp.png" alt="NASA VDP Hall of Fame Acknowledgment" class="timeline-img" onerror="this.style.display='none'">
+            </div>
+
+            <h2>Key Takeaways</h2>
+            <ul>
+                <li><strong>Unlisted links are public:</strong> If an endpoint relies solely on link secrecy without verifying the session identity, anyone who discovers the link possesses the same privileges as internal personnel.</li>
+                <li><strong>Enforce Least Privilege by Default:</strong> Link sharing configurations must default to restricted viewer access, requiring explicit authorization for modification.</li>
+                <li><strong>OSINT Remains a Potent Threat Vector:</strong> High-impact discoveries often stem from passive reconnaissance and configuration audits rather than complex memory corruption.</li>
+            </ul>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Muhammad Agung Faizal. Built from scratch with HTML/CSS/JS.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

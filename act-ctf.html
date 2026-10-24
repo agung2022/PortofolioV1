@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write-up: ACT CTF 1.0 - RegJaBarCTF Team 2 | Muhammad Agung Faizal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .article-container {
+            max-width: 900px;
+            margin: 100px auto 60px;
+            padding: 0 24px;
+        }
+
+        .back-nav {
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #ffffff;
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            background: rgba(0, 255, 204, 0.08);
+            border: 1px solid rgba(0, 255, 204, 0.25);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .article-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #ffffff;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 16px;
+            background: var(--surface-color);
+            padding: 18px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .meta-item .meta-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-item .meta-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .meta-item .meta-value.highlight {
+            color: var(--primary-color);
+        }
+
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .article-content h2 {
+            font-size: 1.45rem;
+            color: #ffffff;
+            margin: 45px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .article-content h2::before {
+            content: "##";
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin: 28px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-cat {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0, 255, 204, 0.12);
+            color: var(--primary-color);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            text-transform: uppercase;
+        }
+
+        .article-content p {
+            margin-bottom: 16px;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 0 0 20px 24px;
+            color: var(--text-main);
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+        }
+
+        .flag-box {
+            background: rgba(0, 255, 204, 0.05);
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            padding: 12px 18px;
+            margin: 18px 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.15);
+        }
+
+        .flag-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .code-block {
+            background: #06090e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 16px 0 22px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #11161f;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #30363d;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+
+        pre {
+            padding: 16px 20px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            color: #e6edf3;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--primary-color);
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        .toc {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 25px 0 40px;
+        }
+
+        .toc h4 {
+            color: #ffffff;
+            font-family: 'Fira Code', monospace;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 8px 16px;
+        }
+
+        .toc-list a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-family: 'Fira Code', monospace;
+            transition: color 0.2s;
+        }
+
+        .toc-list a:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .article-container {
+                margin-top: 80px;
+                padding: 0 16px;
+            }
+            .meta-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo" style="text-decoration: none;">&gt;_ MyPorto.</a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="article-container">
+        <!-- Back Button -->
+        <div class="back-nav">
+            <a href="index.html#projects" class="back-link">&larr; Back to Portfolio</a>
+        </div>
+
+        <!-- Article Header -->
+        <header class="article-header">
+            <span class="article-tag">CTF Competition &bull; Official Write-up</span>
+            <h1 class="article-title">ACT CTF 1.0: Comprehensive Technical Write-up & Challenge Solutions</h1>
+            
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="meta-label">Team Name</div>
+                    <div class="meta-value">RegJaBarCTF Team2</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Role</div>
+                    <div class="meta-value highlight">Team Leader (Muhammad Agung Faizal.)</div>
+                    <div class="meta-value highlight">Member Team(Muhammad Nur)</div>
+                    <div class="meta-value highlight">Member Team(Azri Muhammad)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Event Date</div>
+                    <div class="meta-value">17 Maret 2024</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Scope</div>
+                    <div class="meta-value">Web, Rev, Forensics, Crypto, OSINT</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quick Jump / Table of Contents -->
+        <div class="toc">
+            <h4>Quick Jump to Challenges:</h4>
+            <div class="toc-list">
+                <a href="#web-cloner">&bull; [Web] Web Cloner (LFI)</a>
+                <a href="#reversing">&bull; [Rev] Rustverse Engineer</a>
+                <a href="#forensics">&bull; [Forensics] Secret Message</a>
+                <a href="#crypto-rot13">&bull; [Crypto] r013tan</a>
+                <a href="#crypto-deadfish">&bull; [Crypto] Deadfish Language</a>
+                <a href="#osint">&bull; [OSINT] Catch skrip Kiddies</a>
+                <a href="#stego-misc">&bull; [Stego & Misc] Spiderman & QR</a>
+            </div>
+        </div>
+
+        <article class="article-content">
+            <p>
+                Dokumentasi ini merupakan <em>Proof of Concept (PoC)</em> dan <em>write-up</em> resmi penyelesaian berbagai kategori tantangan dalam kompetisi <strong>ACT CTF 1.0</strong> oleh tim <strong>ACT_JAWA BARAT_RegJaBarCTF Team2</strong> yang dipimpin oleh Muhammad Agung Faizal bersama rekan tim (Muhammad Nur dan Azri Muhammad).
+            </p>
+
+            <!-- 1. WEB EXPLOITATION -->
+            <h2 id="web-cloner">1. Web Exploitation: Web Cloner</h2>
+            <p>
+                <span class="badge-cat">Web Exploitation</span> &mdash; <strong>Challenge:</strong> Web Cloner Machine
+            </p>
+            <p>
+                Diberikan layanan web clone di <code>http://103.176.79.161:10001/</code> dengan petunjuk lokasi flag pada path <code>flag/flag.txt</code>. Mekanisme aplikasi dirancang untuk mengunduh ("mengkloning") halaman web eksternal berdasarkan input URI dari pengguna.
+            </p>
+            <p>
+                <strong>Vulnerability Analysis & Exploitation:</strong><br>
+                Aplikasi mengalami kerentanan <em>Arbitrary File Read / Local File Inclusion (LFI)</em> akibat tidak adanya validasi skema URI. Parser backend menerima skema file lokal (<code>file://</code>) sebagai input yang valid, sehingga penyerang dapat membaca file langsung dari sistem berkas server tanpa batas direktori.
+            </p>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                    <span>payload - URI Input</span>
+                </div>
+                <pre><code>file:///flag.txt</code></pre>
+            </div>
+            <p>Dengan memasukkan payload tersebut ke dalam form input clone, server membaca dan menampilkan konten <code>flag.txt</code> secara langsung.</p>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{lfi_via_file_scheme_success}</span>
+            </div>
+
+            <!-- 2. REVERSING -->
+            <h2 id="reversing">2. Reverse Engineering: Rustverse Engineer</h2>
+            <p>
+                <span class="badge-cat">Reverse Engineering</span> &mdash; <strong>Challenge:</strong> Rustverse
+            </p>
+            <p>
+                Peserta diberikan file biner bernama <code>rustverse</code> yang dikompilasi menggunakan bahasa pemrograman Rust. Target tantangan adalah menganalisis struktur biner dan menemukan flag rahasia yang tersimpan di dalamnya.
+            </p>
+            <p>
+                <strong>Analysis & Extraction:</strong><br>
+                Meskipun Rust memiliki sistem keamanan memori yang ketat (*memory-safe*), pengembang sering kali melakukan kesalahan fatal dengan menyimpan kredensial atau string sensitif langsung sebagai konstanta/variabel statis tanpa enkripsi (*hardcoded plain-text*).
+            </p>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                    <span>bash - static string extraction</span>
+                </div>
+                <pre><code># Analisis strings di lingkungan Linux/WSL:
+strings rustverse | grep -i "ACT_CTF"
+
+# Atau inspeksi langsung string buffer pada binary viewer:
+Find: "ACT_CTF"</code></pre>
+            </div>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{rust_is_saf3_but_who_write_pa$$w0rd_on_the_variable_like_this_is_a_dumb_269a18f6}</span>
+            </div>
+
+            <!-- 3. FORENSICS -->
+            <h2 id="forensics">3. Digital Forensics: Secret Message</h2>
+            <p>
+                <span class="badge-cat">Digital Forensics</span> &mdash; <strong>Challenge:</strong> Secret Message (<code>gambarsus.png</code>)
+            </p>
+            <p>
+                Tantangan menyediakan file gambar kucing berformat PNG (<code>gambarsus.png</code>). Analisis visual awal tidak menunjukkan keanehan, namun ukuran biner mengindikasikan adanya payload data tambahan.
+            </p>
+            <p>
+                <strong>Step 1: Binary Carving dengan Binwalk</strong><br>
+                Menggunakan <code>binwalk</code>, ditemukan arsip ZIP tersembunyi yang disematkan di dalam biner PNG:
+            </p>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                    <span>bash - file extraction</span>
+                </div>
+                <pre><code>binwalk -e gambarsus.png
+
+# Hasil ekstraksi memunculkan 8 file gambar:
+# Warna-1.png, Warna-2.png, ..., Warna-8.png</code></pre>
+            </div>
+            <p>
+                <strong>Step 2: Inspeksi PNG Chunk Palette (PLTE)</strong><br>
+                Setiap gambar memiliki chunk <code>PLTE</code> (Indexed Palette) yang menyimpan entri warna khusus. Menggunakan <code>pngcheck -v</code>, kami mengidentifikasi nilai Hex RGB yang disematkan pada setiap palette:
+            </p>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                    <span>bash - chunk analysis</span>
+                </div>
+                <pre><code>pngcheck -v Warna-1.png
+# chunk PLTE at offset 0x00025: (0x41, 0x43, 0x54) -> ASCII: 'A', 'C', 'T'</code></pre>
+            </div>
+            <p>
+                Dengan mengekstrak nilai RGB pada semua file gambar (1 s.d. 8) dan mengonversinya ke karakter UTF-8:
+            </p>
+            <ul>
+                <li><code>Warna-1.png</code>: <code>0x41, 0x43, 0x54</code> &rarr; <code>ACT</code></li>
+                <li><code>Warna-2.png</code>: <code>_ C T</code></li>
+                <li><code>Warna-3.png</code>: <code>{ k</code></li>
+                <li><code>Warna-4.png</code>: <code>0 K</code></li>
+                <li><code>Warna-5.png</code>: <code>_ a n d</code></li>
+                <li><code>Warna-6.png</code>: <code>4 _ j</code></li>
+                <li><code>Warna-7.png</code>: <code>A G 0</code></li>
+                <li><code>Warna-8.png</code>: <code>! ! }</code></li>
+            </ul>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{k0K_and4_jAGO!!}</span>
+            </div>
+
+            <!-- 4. CRYPTOGRAPHY -->
+            <h2 id="crypto-rot13">4. Cryptography: r013tan</h2>
+            <p>
+                <span class="badge-cat">Cryptography</span> &mdash; <strong>Challenge:</strong> r013tan
+            </p>
+            <p>
+                Diberikan ciphertext: <code>NPG_PGS{2_F1aT1VVG}</code>. Judul soal <em>"r013tan"</em> merupakan petunjuk fonetik untuk algoritma <strong>ROT13</strong> (Caesar Cipher dengan pergeseran kunci $k = 13$).
+            </p>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                    <span>python - rot13 decoder</span>
+                </div>
+                <pre><code>import codecs
+ciphertext = "NPG_PGS{2_F1aT1VVG}"
+print(codecs.decode(ciphertext, 'rot_13'))
+# Output: ACT_CTF{2_S1nG1IIT}</code></pre>
+            </div>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{2_S1nG1IIT}</span>
+            </div>
+
+            <!-- 5. ESOTERIC CRYPTO -->
+            <h2 id="crypto-deadfish">5. Cryptography: Blublubblublublublub</h2>
+            <p>
+                <span class="badge-cat">Esoteric Programming</span> &mdash; <strong>Challenge:</strong> Blublubblublublublub
+            </p>
+            <p>
+                Diberikan instruksi acak berupa kombinasi huruf <code>xxccdd...</code> dengan petunjuk <em>"Ikan Mati"</em>. Terjemahan bahasa Inggris dari "Ikan Mati" adalah <strong>Deadfish</strong>, sebuah bahasa pemrograman esoterik (*esolang*) yang menggunakan satu sel memori dengan 4 operasi dasar:
+            </p>
+            <ul>
+                <li><code>i</code>: Menambah sel (+1)</li>
+                <li><code>d</code>: Mengurangi sel (-1)</li>
+                <li><code>s</code>: Mengkuadratkan nilai sel (^2)</li>
+                <li><code>o</code>: Menampilkan output karakter</li>
+            </ul>
+            <p>
+                Menggunakan parser Deadfish interpreter dengan format keluaran ASCII Characters, program menghasilkan pesan tersembunyi:
+            </p>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{Hello_how_are_you_im_under_the_water_please_help_me_here_too_much_raining_Ululululu}</span>
+            </div>
+
+            <!-- 6. OSINT -->
+            <h2 id="osint">6. OSINT: Catch skrip Kiddies</h2>
+            <p>
+                <span class="badge-cat">OSINT</span> &mdash; <strong>Challenge:</strong> Catch skrip Kiddies
+            </p>
+            <p>
+                Tantangan menugaskan peserta melacak aktivitas dan artefak backdoor seorang <em>threat actor</em> dengan alias <strong>PocongGelinding</strong>.
+            </p>
+            <p>
+                <strong>Investigation Steps:</strong>
+            </p>
+            <ol>
+                <li>
+                    <strong>Username Enumeration:</strong> Menggunakan tool OSINT <code>whatsmyname.app</code> untuk memetakan keberadaan akun <code>PocongGelinding</code> di berbagai platform publik. Ditemukan repositori GitHub aktif.
+                </li>
+                <li>
+                    <strong>Analisis Repositori:</strong> Memeriksa repositori <code>PocongGelinding/Backdoor</code>. Pada file README terdapat string Base64 yang ternyata hanya merupakan pengalih perhatian (*troll/distraction*).
+                </li>
+                <li>
+                    <strong>Git Commit History Inspection:</strong> Penyerang sering kali menghapus kunci rahasia pada commit terakhir, namun jejaknya tetap tersimpan permanen di histori commit Git. Memeriksa riwayat commit (<em>Commit Activity</em>) memunculkan commit diff penghapusan flag:
+                </li>
+            </ol>
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="terminal-dots"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                    <span>git diff log</span>
+                </div>
+                <pre><code>Commit: PocongGelinding committed last week
+Action: Delete ACT_CTF{Jejak_digital_itu_nyata}</code></pre>
+            </div>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{Jejak_digital_itu_nyata}</span>
+            </div>
+
+            <!-- 7. STEGANOGRAPHY & MISC -->
+            <h2 id="stego-misc">7. Steganography & Misc Solutions</h2>
+            <p>
+                <span class="badge-cat">Steganography</span> &mdash; <strong>Find me if you can:</strong><br>
+                File gambar Spider-Man (<code>hackids_stegano.jpg</code>) diekstrak menggunakan perintah <code>binwalk -e</code>. Ditemukan arsip RAR tersembunyi berisi file teks dengan isi:
+            </p>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{1337}</span>
+            </div>
+
+            <p style="margin-top: 25px;">
+                <span class="badge-cat">Misc</span> &mdash; <strong>Profesional CTF Player (Sanity Check):</strong><br>
+                Disediakan file <code>sanity.png</code> yang memuat kode QR berpola khusus. Dilakukan pemindaian barcode/QR reader optik menggunakan perangkat Android:
+            </p>
+            <div class="flag-box">
+                <span class="flag-label">FLAG:</span> <span>ACT_CTF{EZ_SCAN_FOR_SANITY}</span>
+            </div>
+            <h2 id="certificate">Certificate & Event Verification</h2>
+            <p>
+                Dokumentasi resmi sertifikat kompetisi <strong>ACT CTF 1.0</strong> perwakilan Jawa Barat (<strong>RegJaBarCTF Team2</strong>):
+            </p>
+            <div style="margin-top: 15px;">
+                <!-- Masukkan file gambar sertifikatmu ke folder images/ dengan nama sertifikat-act-ctf.jpg -->
+                <img src="asset/sert-act.png" alt="Sertifikat ACT CTF 1.0 - RegJaBarCTF Team2" class="timeline-img" onerror="this.src='https://via.placeholder.com/800x450/161b22/00ffcc?text=Tempat+Sertifikat+ACT+CTF+(Ganti+dengan+file+gambarmu)'">
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Muhammad Agung Faizal. Built from scratch with HTML/CSS/JS.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

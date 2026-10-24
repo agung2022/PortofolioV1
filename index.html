@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Muhammad Agung Faizal | Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="nav-content">
+        <div class="logo">&gt;_ MyPorto.</div>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header id="home" class="hero">
+      <div class="hero-content reveal">
+        <p class="greeting">Hello, world! I am</p>
+        <h1 class="title-name">Muhammad Agung Faizal</h1>
+        <h2 class="typewriter-container">
+          <span id="typewriter"></span><span class="cursor">|</span>
+        </h2>
+        <p class="summary">
+          Recent Informatics Engineering graduate focused on Offensive Security,
+          Penetration Testing, and Cloud Engineering.
+        </p>
+        <div class="cta-buttons">
+          <a href="#projects" class="btn primary">View My Work</a>
+          <a href="#contact" class="btn secondary">Contact Me</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="about" class="section">
+      <div class="container reveal">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              Saya adalah lulusan Teknik Informatika yang sangat bersemangat di
+              bidang Keamanan Siber, khususnya analisis kerentanan web. Saya
+              terbiasa menggunakan pendekatan analitis untuk memecahkan masalah
+              keamanan kompleks secara etis.
+            </p>
+            <br />
+            <p>
+              Selain fokus pada offensive security, saya juga memiliki pemahaman
+              kuat dalam pengembangan aplikasi dan arsitektur backend
+              menggunakan Google Cloud Platform. Saat ini saya aktif
+              berpartisipasi dalam beberapa kompetisi CTF dan program Bug Bounty
+              di HackerOne.
+            </p>
+          </div>
+          <div class="skills">
+            <h3>Tech Stack & Tools</h3>
+            <div class="skill-tags">
+              <span>Kali Linux</span>
+              <span>Burp Suite</span>
+              <span>Python</span>
+              <span>JavaScript</span>
+              <span>Google Cloud</span>
+              <span>Web App Security</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <div class="container reveal">
+        <h2 class="section-title">Experience & Achievements</h2>
+        <div class="timeline">
+          <!-- Timeline Item 1 -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>NASA VDP Hall of Fame</h3>
+              <span class="date">Independent Security Researcher</span>
+              <p>
+                Diakui dalam Vulnerability Disclosure Policy (VDP) NASA karena
+                berhasil mengidentifikasi dan melaporkan celah keamanan secara
+                etis dan bertanggung jawab.
+              </p>
+              <!-- Tempatkan link gambar/sertifikat NASA VDP kamu di atribut src di bawah -->
+              <img
+                src="asset/nasa-vdp.png"
+                alt="NASA VDP Hall of Fame Acknowledgment"
+                class="timeline-img"
+              />
+              <img src="asset/hof-nasa.png" alt="NASA VDP Hall of Fame Screenshot" class="timeline-img"/>
+            </div>
+          </div>
+
+          <!-- Timeline Item 2: Red-Team (Dengan Image Slider Dinamis) -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <h3>Red-Team Cyber Security Lab Creator</h3>
+              <span class="date">U-Connect Jakarta</span>
+              <p>
+                Meraih penghargaan sebagai salah satu Tim Terbaik (Top 1 out of
+                6) dalam merancang dan membangun simulasi Red-Team Cyber
+                Security Lab.
+              </p>
+
+              <!-- Carousel / Slider Container -->
+              <div class="carousel-container" id="carousel-redteam">
+                <div class="carousel-track">
+                  <!-- Foto 1: Sertifikat -->
+                  <img
+                    src="asset/u-connect.jpg"
+                    alt="Sertifikat Red Team U-Connect"
+                    class="carousel-img"
+                  />
+                  <!-- Foto 3: Dokumentasi Kegiatan 2 -->
+                  <img
+                    src="asset/fotbar.png"
+                    alt="Dokumentasi Kegiatan Lab 2"
+                    class="carousel-img"
+                  />
+                </div>
+
+                <!-- Tombol Navigasi -->
+                <button
+                  type="button"
+                  class="carousel-btn prev-btn"
+                  onclick="moveSlide(-1, 'carousel-redteam')"
+                >
+                  &#10094;
+                </button>
+                <button
+                  type="button"
+                  class="carousel-btn next-btn"
+                  onclick="moveSlide(1, 'carousel-redteam')"
+                >
+                  &#10095;
+                </button>
+                <div class="carousel-dots">
+                <span class="dot active" onclick="goToSlide(0, 'carousel-redteam')"></span>
+                <span class="dot" onclick="goToSlide(1, 'carousel-redteam')"></span>
+                <span class="dot" onclick="goToSlide(2, 'carousel-redteam')"></span>
+            </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Item: Google Cybersecurity Professional Certificate -->
+<div class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+        <h3>Google Cybersecurity Professional Certificate</h3>
+        <span class="date">Google via Coursera &bull; 27 Jan 2025</span>
+        <p>Menyelesaikan program profesional 8 kursus dari Google yang mencakup pengelolaan risiko keamanan, proteksi jaringan, automasi tugas keamanan dengan Python, Linux, SQL, SIEM tools, serta Intrusion Detection Systems (IDS).</p>
+        
+        <!-- Link Verifikasi Kredensial -->
+        <p style="margin: 10px 0 15px;">
+            <a href="https://coursera.org/verify/professional-cert/HLP20ZK9O0U8" target="_blank" rel="noopener noreferrer" class="card-link" style="font-size: 0.85rem;">
+                Verify Credential (Coursera) &rarr;
+            </a>
+        </p>
+
+        <!-- Gambar Sertifikat -->
+        <img src="asset/google-cybersecurity.jpeg" alt="Google Cybersecurity Professional Certificate - Muhammad Agung Faizal" class="timeline-img" onerror="this.src='https://via.placeholder.com/800x450/161b22/00ffcc?text=Google+Cybersecurity+Certificate+(images/google-cybersecurity.jpg)'">
+    </div>
+</div>
+
+          <!-- Timeline Item 3 -->
+         <!-- Timeline Item 3: Bangkit Academy (Dengan Slider Dinamis) -->
+<div class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+        <h3>Cloud Computing Cohort - Distinction Graduate</h3>
+        <span class="date">Bangkit Academy 2024</span>
+        <p>Lulusan terbaik (Distinction). Mengkonfigurasi dan mendeploy infrastruktur backend menggunakan GCP untuk proyek Capstone Machine Learning berbasis Android.</p>
+        
+        <!-- Carousel / Slider Container Bangkit -->
+        <div class="carousel-container" id="carousel-bangkit">
+            <div class="carousel-track">
+                <!-- Foto 1: Sertifikat Distinction -->
+                <img src="asset/bangkit.png" alt="Sertifikat Distinction Bangkit Academy" class="carousel-img">
+                <!-- Foto 2: Dokumentasi Capstone / Proyek RupiSmart -->
+                <img src="asset/capstoneteam.jpg" alt="Dokumentasi Proyek Capstone" class="carousel-img">
+                <!-- Foto 3: Badge JuaraGCP / Kegiatan Belajar -->
+                <img src="asset/terbaik.png" alt="Dokumentasi JuaraGCP Badges" class="carousel-img">
+            </div>
+            
+            <!-- Tombol Navigasi Manual -->
+            <button type="button" class="carousel-btn prev-btn" onclick="moveSlide(-1, 'carousel-bangkit')">&#10094;</button>
+            <button type="button" class="carousel-btn next-btn" onclick="moveSlide(1, 'carousel-bangkit')">&#10095;</button>
+
+            <!-- Indikator Titik (Dots) -->
+            <div class="carousel-dots">
+                <span class="dot active" onclick="goToSlide(0, 'carousel-bangkit')"></span>
+                <span class="dot" onclick="goToSlide(1, 'carousel-bangkit')"></span>
+                <span class="dot" onclick="goToSlide(2, 'carousel-bangkit')"></span>
+            </div>
+        </div>
+        
+    </div>
+</div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container reveal">
+        <h2 class="section-title">Projects & Security Research</h2>
+        <div class="cards-grid">
+          <!-- 1. BudgetinYuk App -->
+          <div class="card">
+            <div class="card-content">
+              <h3>BudgetinYuk App</h3>
+              <p class="tech">Google Dev Community - JuaraVibeCoding</p>
+              <p>
+                Mengembangkan aplikasi manajemen keuangan komprehensif untuk
+                melacak dan mengatur keuangan personal, keluarga, dan UMKM
+                secara efisien.
+              </p>
+              <a href="https://github.com/agung2022/BudgetinYuk-Apps/tree/main" class="card-link">View Details &rarr;</a>
+            </div>
+          </div>
+
+          <!-- 2. Temuan Bug NASA (IDOR via Google Dorking) -->
+          <div class="card">
+            <div class="card-content">
+              <h3>NASA VDP: Sensitive Data Exposure via IDOR</h3>
+              <p class="tech">Valid Vulnerability Report</p>
+              <p>
+                Memanfaatkan teknik <i>Google Dorking</i> tingkat lanjut untuk
+                menemukan tautan <i>cloud drive</i> publik yang terekspos.
+                Mengidentifikasi kerentanan IDOR kritis yang memungkinkan akses,
+                modifikasi, dan penghapusan data sensitif (PII). Temuan
+                divalidasi oleh tim keamanan NASA.
+              </p>
+              <!-- Biarkan href "#" jika laporannya bersifat rahasia/private -->
+              <a href="nasa-vdp-writeup.html" class="card-link">View Details &rarr;</a>
+            </div>
+          </div>
+
+          <!-- 3. CTF DownunderCTF5 (TCP1P) -->
+          <div class="card">
+            <div class="card-content">
+              <h3>DownunderCTF V | TCP1P Team</h3>
+              <p class="tech">Top 250 out of 2144 Global Teams</p>
+              <p>
+                Berkompetisi di tingkat global bersama tim TCP1P. Berkontribusi
+                sebagai spesialis pemecahan masalah kompleks pada kategori
+                <b>Cryptography</b> dan eksploitasi <b>Web Vulnerabilities</b>.
+              </p>
+              <a href="ductf.html" class="card-link">View Details &rarr;</a>
+            </div>
+          </div>
+
+          <!-- 4. CTF Regional - Anon Cyber Team (Ada Write-up) -->
+          <div class="card">
+            <div class="card-content">
+              <h3>Regional CTF Qualifier | Anon Cyber Team</h3>
+              <p class="tech">Jawa Barat Representative</p>
+              <p>
+                Mewakili regional Jawa Barat dalam kompetisi Capture The Flag.
+                Memecahkan berbagai tantangan keamanan siber di tingkat
+                regional.
+              </p>
+              <!-- Ganti tanda '#' dengan link asli tempat writeup-mu berada (Medium, GitHub, atau Google Drive) -->
+              <a href="act-ctf.html" class="card-link">View Details &rarr;</a>
+            </div>
+          </div>
+
+          <!-- 5. CTF Meta4Sec (Solo Player) -->
+          <div class="card">
+            <div class="card-content">
+              <h3>Meta4Sec CTF Qualifier (Solo Player)</h3>
+              <p class="tech">Top 50 out of 125 Teams</p>
+              <p>
+                Berkompetisi secara individu melawan tim-tim lain dan berhasil
+                masuk dalam daftar Top 50. Berhasil memecahkan tantangan di
+                berbagai kategori:
+                <b
+                  >Web Vulnerabilities, Cryptography, Reverse Engineering,
+                  Steganography, dan Misc.</b
+                >
+              </p>
+              <a href="meta4sec.html" class="card-link">View Details &rarr;</a>
+            </div>
+          </div>
+
+          <!-- 6. Capstone Project Bangkit (RupiSmart) -->
+          <div class="card">
+            <div class="card-content">
+              <h3>RupiSmart - Accessibility App</h3>
+              <p class="tech">Bangkit Academy Capstone | Cloud & Backend</p>
+              <p>
+                Aplikasi pendeteksi nilai mata uang Rupiah untuk penyandang
+                tunanetra memanfaatkan fitur aksesibilitas <i>smartphone</i>.
+                Bertanggung jawab penuh dalam arsitektur <i>backend</i> dan
+                infrastruktur pada Google Cloud Platform (GCP), berkolaborasi
+                lintas divisi (ML & Mobile Dev).
+              </p>
+              <a href="https://github.com/agung2022/Cloud-Computing/tree/main" class="card-link">View Details &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container reveal">
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="contact-box">
+          <p>
+            Saat ini saya terbuka untuk peluang baru di bidang Cybersecurity,
+            Penetration Testing, dan Cloud Engineering. Jangan ragu untuk
+            menghubungi saya melalui Email atau terhubung di LinkedIn!
+          </p>
+          <br />
+          <div class="contact-links">
+            <a href="mailto:agungfaizal2018@gmail.com" class="contact-btn"
+              >Email Me</a
+            >
+            <a
+              href="https://www.linkedin.com/in/muhammad-agung-faizal/"
+              target="_blank"
+              class="contact-btn outline"
+              >LinkedIn Profile</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        &copy; 2026 Muhammad Agung Faizal. Built from scratch with HTML/CSS/JS.
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

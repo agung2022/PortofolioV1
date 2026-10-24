@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DownunderCTF 2024 | TCP1P Team | Muhammad Agung Faizal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .article-container {
+            max-width: 900px;
+            margin: 100px auto 60px;
+            padding: 0 24px;
+        }
+
+        .back-nav {
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #ffffff;
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            background: rgba(0, 255, 204, 0.08);
+            border: 1px solid rgba(0, 255, 204, 0.25);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .article-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #ffffff;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 16px;
+            background: var(--surface-color);
+            padding: 18px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .meta-item .meta-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-item .meta-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .meta-item .meta-value.highlight {
+            color: var(--primary-color);
+        }
+
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .article-content h2 {
+            font-size: 1.45rem;
+            color: #ffffff;
+            margin: 40px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .article-content h2::before {
+            content: "##";
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 16px;
+        }
+
+        .article-content ul {
+            margin: 0 0 20px 24px;
+            color: var(--text-main);
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+        }
+
+        .cert-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .cert-img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cert-img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 30px rgba(0, 255, 204, 0.15);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 25px 0 35px;
+        }
+
+        .stat-box {
+            background: #06090e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .stat-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .article-container {
+                margin-top: 80px;
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo" style="text-decoration: none;">&gt;_ MyPorto.</a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="article-container">
+        <div class="back-nav">
+            <a href="index.html#projects" class="back-link">&larr; Back to Portfolio</a>
+        </div>
+
+        <header class="article-header">
+            <span class="article-tag">International CTF &bull; Global Competition</span>
+            <h1 class="article-title">DownunderCTF 2024: Global Performance & Verification with TCP1P Team</h1>
+            
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="meta-label">CTF Event</div>
+                    <div class="meta-value">DownunderCTF 2024 (v5)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Team Affiliation</div>
+                    <div class="meta-value highlight">TCP1P Team</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Global Standing</div>
+                    <div class="meta-value highlight">Top 250 / 2,144 Teams</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Specialization</div>
+                    <div class="meta-value">Cryptography & Web Security</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Username</div>
+                    <div class="meta-value">SENPAI_HEKER (AKA. Muhammad Agung Faizal)</div>
+                </div>
+            </div>
+        </header>
+
+        <article class="article-content">
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-number">2,144</div>
+                    <div class="stat-desc">Participating Global Teams</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">Top 250</div>
+                    <div class="stat-desc">Final Worldwide Rank</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">Top 12%</div>
+                    <div class="stat-desc">Global Performance Percentile</div>
+                </div>
+            </div>
+
+            <h2>Official Certificate & Verification</h2>
+            <p>
+                Sertifikat kepesertaan dan validasi pencapaian kompetisi DownunderCTF 2024 bersama tim TCP1P:
+            </p>
+
+            <div class="cert-card">
+                <!-- Simpan foto sertifikatmu di images/sertifikat-ductf.jpg -->
+                <img src="asset/ductf5.png" alt="Sertifikat DownunderCTF 2024 - TCP1P Team" class="cert-img" onerror="this.src='https://via.placeholder.com/850x500/161b22/00ffcc?text=Tempat+Sertifikat+DownunderCTF+(sertifikat-ductf.jpg)'">
+            </div>
+
+            <h2>Event Overview & Team Collaboration</h2>
+            <p>
+                <strong>DownunderCTF (DUCTF)</strong> adalah kompetisi keamanan siber berskala global terbesar di belahan bumi selatan yang diselenggarakan oleh komunitas keamanan siber Australia. Kompetisi ini menguji kemampuan analitis dan peretasan etis melawan ribuan praktisi profesional, tim kampus kelas dunia, serta komunitas CTF internasional.
+            </p>
+            <p>
+                Dalam kompetisi ini, saya tergabung sebagai anggota aktif tim <strong>TCP1P</strong>, salah satu komunitas CTF dan riset keamanan siber terkemuka di Indonesia. Berkolaborasi secara intensif selama kompetisi berlangsung 48 jam nonstop, tim berhasil menembus <strong>Top 250 dari 2.144 tim terdaftar di seluruh dunia</strong>.
+            </p>
+
+            <h2>Focus Areas & Problem-Solving Role</h2>
+            <p>
+                Sebagai bagian dari tim, fokus kontribusi saya terpusat pada kategori berikut:
+            </p>
+            <ul>
+                <li>
+                    <strong>Cryptography:</strong> Menganalisis kelemahan algoritma enkripsi kustom, eksploitasi parameter matematika pada skema RSA (seperti serangan *small public exponent* dan *common modulus*), serta deobfuskasi ciphertext menggunakan analisis frekuensi dan kalkulasi modular.
+                </li>
+                <li>
+                    <strong>Web Vulnerabilities:</strong> Membedah mekanisme otentikasi aplikasi web, menguji celah logika bisnis (*business logic flaws*), manipulasi token, serta bypass filter input pada lingkungan server modern.
+                </li>
+            </ul>
+
+            <h2>Tools & Methodologies Used</h2>
+            <ul>
+                <li><strong>Cryptanalysis:</strong> Python (PyCryptodome), CyberChef, SageMath, RsaCtfTool.</li>
+                <li><strong>Web Exploitation & Traffic Interception:</strong> Burp Suite Professional, cURL, Browser DevTools.</li>
+                <li><strong>Collaboration & Workflow:</strong> Discord war-rooms, internal private git repos, dan live notes sharing untuk sinkronisasi pemecahan *flag*.</li>
+            </ul>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Muhammad Agung Faizal. Built from scratch with HTML/CSS/JS.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

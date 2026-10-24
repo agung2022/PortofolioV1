@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Meta4sec 3.0 | Solo Player Performance | Muhammad Agung Faizal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .article-container {
+            max-width: 900px;
+            margin: 100px auto 60px;
+            padding: 0 24px;
+        }
+
+        .back-nav {
+            margin-bottom: 30px;
+        }
+
+        .back-link {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+            color: #ffffff;
+        }
+
+        .article-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .article-tag {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            background: rgba(0, 255, 204, 0.08);
+            border: 1px solid rgba(0, 255, 204, 0.25);
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .article-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #ffffff;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 16px;
+            background: var(--surface-color);
+            padding: 18px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        .meta-item .meta-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .meta-item .meta-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .meta-item .meta-value.highlight {
+            color: var(--primary-color);
+        }
+
+        .article-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .article-content h2 {
+            font-size: 1.45rem;
+            color: #ffffff;
+            margin: 40px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .article-content h2::before {
+            content: "##";
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 16px;
+        }
+
+        .article-content ul {
+            margin: 0 0 20px 24px;
+            color: var(--text-main);
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+        }
+
+        .cert-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .cert-img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cert-img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 30px rgba(0, 255, 204, 0.15);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 25px 0 35px;
+        }
+
+        .stat-box {
+            background: #06090e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .stat-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-cat {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(0, 255, 204, 0.12);
+            color: var(--primary-color);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .article-container {
+                margin-top: 80px;
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo" style="text-decoration: none;">&gt;_ MyPorto.</a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#projects">Projects</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="article-container">
+        <div class="back-nav">
+            <a href="index.html#projects" class="back-link">&larr; Back to Portfolio</a>
+        </div>
+
+        <header class="article-header">
+            <span class="article-tag">National CTF &bull; Solo Competitor</span>
+            <h1 class="article-title">CTF Meta4sec 3.0: Top 50 Standing as a Solo Player</h1>
+            
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <div class="meta-label">Event</div>
+                    <div class="meta-value">CTF Meta4sec 3.0</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Organizer</div>
+                    <div class="meta-value">Meta4sec & Redlimit</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Performance</div>
+                    <div class="meta-value highlight">Top 50 / 125 Teams</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Participant Type</div>
+                    <div class="meta-value highlight">Solo Player</div>
+                </div>
+            </div>
+        </header>
+
+        <article class="article-content">
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-number">125</div>
+                    <div class="stat-desc">Registered Teams</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">Top 50</div>
+                    <div class="stat-desc">Final Qualifier Rank</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">100% Solo</div>
+                    <div class="stat-desc">Individual Execution</div>
+                </div>
+            </div>
+
+            <h2>Official Certificate & Credential Verification</h2>
+            <p>
+                Sertifikat verifikasi resmi kepesertaan dalam kompetisi <strong>CTF Meta4sec 3.0</strong> yang diselenggarakan oleh Meta4sec dan Redlimit Academy:
+            </p>
+
+            <div class="cert-card">
+                <!-- Simpan foto sertifikat di images/meta4sec.jpg -->
+                <img src="asset/meta4sec.jpg" alt="Sertifikat CTF Meta4sec 3.0 - Muhammad Agung Faizal" class="cert-img" onerror="this.src='https://via.placeholder.com/850x550/161b22/00ffcc?text=Tempat+Sertifikat+Meta4Sec+(images/meta4sec.jpg)'">
+                <p style="margin-top: 15px; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--text-muted);">
+                    Credential ID: <span style="color: var(--primary-color);">01/COC3.0/AK/08/15</span> &bull; Issued: 28 Agustus 2026
+                </p>
+            </div>
+
+            <h2>Competition Overview</h2>
+            <p>
+                <strong>CTF Meta4sec 3.0</strong> adalah ajang kompetisi keamanan siber tingkat nasional yang diselenggarakan secara kolaboratif oleh komunitas <strong>Meta4sec</strong> dan <strong>Redlimit Academy</strong>. Kompetisi ini menguji ketangkasan peserta dalam mengidentifikasi, menganalisis, dan mengeksploitasi berbagai skenario kerentanan sistem modern.
+            </p>
+            <p>
+                Pada babak kualifikasi ini, saya berkompetisi sebagai <strong>Solo Player</strong> (pemain individu) tanpa rekan tim. Menghadapi tim-tim peserta lain yang terdiri dari multi-personel, strategi yang diterapkan menitikberatkan pada kecepatan pemecahan soal fundamental dan pemilihan tantangan bernilai poin optimal di berbagai kategori.
+            </p>
+
+            <h2>Categories Solved & Technical Scope</h2>
+            <p>
+                Sebagai pemain solo, saya menangani seluruh variasi kategori secara mandiri:
+            </p>
+            <ul>
+                <li>
+                    <strong>Web Vulnerabilities:</strong> Eksploitasi celah autentikasi, analisis alur logika parameter HTTP, dan manipulasi injeksi input.
+                </li>
+                <li>
+                    <strong>Cryptography:</strong> Dekripsi sandi klasik, deobfuskasi skema modular, dan analisis karakter enkripsi.
+                </li>
+                <li>
+                    <strong>Reverse Engineering:</strong> Analisis statis biner terkompilasi, ekstraksi string tersembunyi, dan pemetaan logika percabangan eksekusi.
+                </li>
+                <li>
+                    <strong>Steganography:</strong> Ekstraksi data tersembunyi (*data carving*) dari payload berkas gambar/multimedia menggunakan analisis metadata dan file header.
+                </li>
+                <li>
+                    <strong>Miscellaneous (Misc):</strong> Pemecahan tantangan logika, decoding format data esoterik, dan automasi skrip sederhana.
+                </li>
+            </ul>
+
+            <h2>Tools & Environment</h2>
+            <ul>
+                <li><strong>Linux Environment:</strong> Kali Linux.</li>
+                <li><strong>Web & Traffic Analysis:</strong> Burp Suite, cURL, DevTools.</li>
+                <li><strong>Reversing & Decompilation:</strong> Ghidra, Strings, GDB.</li>
+                <li><strong>Forensics & Stego:</strong> Binwalk, Exiftool, Stegsolve, CyberChef.</li>
+            </ul>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Muhammad Agung Faizal. Built from scratch with HTML/CSS/JS.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
